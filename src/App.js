@@ -1,28 +1,40 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
+import GenerateSimpsons from './components/GenerateSimpsons';
+import DisplaySimpsons from './components/DisplaySimpsons';
 
-class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
-    );
+  class App extends Component {
+    state = {
+      simpsons: {}
+    }
+
+  getSimpsons = () => {
+        fetch("https://thesimpsonsquoteapi.glitch.me/quotes")
+          .then(res => res.json())
+          .then(poulet => {
+            this.setState({
+              simpsons: poulet[0]
+            })
+          })
+      }
+
+  componentDidMount = () => {
+    this.getSimpsons()
   }
-}
 
-export default App;
+  render() {
+        return (
+          <div className="App">
+            <header className="App-header">
+              <p>
+                Simpsons
+          </p>
+            </header>
+            <GenerateSimpsons selectSimpsons={this.getSimpsons} />
+            <DisplaySimpsons simpsons={this.state.simpsons} />
+          </div>
+        )
+      }
+    }
+
+    export default App;
